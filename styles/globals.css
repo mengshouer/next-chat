@@ -1,3 +1,88 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .left_sidebar {
+    @apply flex flex-col justify-between gap-4 flex-shrink-0
+    h-screen w-[68px]
+    p-2;
+  }
+
+  .left_sidebar-logo {
+    @apply flex items-center justify-center overflow-hidden
+    border-2 border-cyan-400 rounded-full cursor-pointer  
+    w-12 h-12 p-1 my-2;
+  }
+
+  .middle_column {
+    @apply flex flex-col gap-4 flex-shrink-0
+    h-screen w-[260px]
+    px-1 py-2 mr-[10px]
+    bg-[#2a2a2b];
+  }
+
+  .middle_column-header {
+    @apply grid grid-rows-3 grid-cols-3
+    border-b-2 border-gray-400
+    italic
+    p-[12px];
+  }
+
+  .channel_collapse_attr {
+    @apply border border-base-300 bg-base-100 rounded-box;
+  }
+
+  .channel-title {
+    @apply collapse-title font-medium flex justify-between items-center;
+  }
+
+  .channel-settings {
+    @apply hover:bg-[#4e5252] z-10;
+  }
+
+  .channel-items {
+    @apply collapse-content font-medium peer-checked:text-secondary-content;
+  }
+
+  .channel-item {
+    @apply flex items-center rounded-xl overflow-hidden mb-2 px-4
+    hover:cursor-pointer hover:bg-[#686969];
+  }
+
+  .main_chatArea {
+    @apply flex-auto flex flex-col justify-between
+    h-screen;
+  }
+
+  .main_chatArea_avatar {
+    @apply avatar mr-4 w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 hover:cursor-pointer;
+  }
+
+  .main_chatArea_bottom_bar {
+    @apply flex flex-row items-center justify-between shrink-0
+    m-3
+    rounded-lg shadow-lg 
+    bg-gray-400 dark:bg-gray-600 px-2
+    h-12;
+  }
+
+  .main_chatArea_bottom_bar_input {
+    @apply font-semibold w-full
+    bg-transparent outline-none 
+    ml-0 mr-auto
+    text-gray-500  dark:text-gray-400 placeholder-gray-500
+    cursor-text;
+  }
+}
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .scrollbar-style::-webkit-scrollbar {
+    display: none;
+  }
+  /* Firefox */
+  .scrollbar-style {
+    scrollbar-width: none;
+  }
+}
