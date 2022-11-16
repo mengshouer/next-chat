@@ -1,7 +1,23 @@
 import type { NextPage } from "next";
 import Link from "next/link";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateUser } from "src/store/user";
 
 const Home: NextPage = () => {
+  const [userid, setUserid] = useState("");
+  const [username, setUsername] = useState("");
+  const dispatch = useDispatch();
+
+  const handleUpdateUser = () => {
+    dispatch(
+      updateUser({
+        user_id: userid,
+        username: username,
+      })
+    );
+  };
+
   return (
     <div
       className="hero min-h-screen"
@@ -16,7 +32,19 @@ const Home: NextPage = () => {
             excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
             a id nisi.
           </p>
-          <button className="btn btn-primary">
+          <input
+            onChange={(e) => setUserid(e.target.value)}
+            type="text"
+            placeholder="userid"
+            className="input input-bordered input-primary w-full max-w-xs"
+          />
+          <input
+            onChange={(e) => setUsername(e.target.value)}
+            type="text"
+            placeholder="username"
+            className="input input-bordered input-secondary w-full max-w-xs"
+          />
+          <button onClick={handleUpdateUser} className="btn btn-primary">
             <Link href="/chat">Get Started</Link>
           </button>
         </div>

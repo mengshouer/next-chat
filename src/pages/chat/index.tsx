@@ -1,4 +1,4 @@
-import { Sidebar, MiddleColumn, MainChatArea } from "@/components/layout";
+import { Sidebar, MiddleColumn, MainChatArea } from "src/components/layout";
 
 export default function Layout() {
   return (
