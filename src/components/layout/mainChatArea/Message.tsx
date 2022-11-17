@@ -7,6 +7,7 @@ import type { MessageProps } from "src/types/chat.types";
 
 export default function Message() {
   const useridRef = useRef<string>("");
+  const messageEnd = useRef<HTMLDivElement>(null);
   const chat = useSelector((state: RootState) => state.chat);
   const dispatch = useDispatch();
 
@@ -16,6 +17,12 @@ export default function Message() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (messageEnd.current) {
+      messageEnd.current.scrollIntoView();
+    }
+  }, [chat.data]);
 
   return (
     <>
@@ -52,6 +59,7 @@ export default function Message() {
             {(useridRef.current = msg.user_id) && ""}
           </div>
         ))}
+      <div ref={messageEnd} />
     </>
   );
 }

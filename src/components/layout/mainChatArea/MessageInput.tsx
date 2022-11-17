@@ -10,6 +10,7 @@ export default function MessageInput() {
 
   const sendMessage = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
+    if (!message) return;
     dispatch(
       updateMessageDataRequest({
         user_id: user.user_id,
