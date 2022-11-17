@@ -1,5 +1,4 @@
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
-import { PayloadAction } from "@reduxjs/toolkit";
 import { fetchMessage, postMessage } from "src/apis/chat";
 import {
   getMessageRequest,
@@ -7,7 +6,8 @@ import {
   getMessageFailure,
   updateMessageDataRequest,
 } from ".";
-import { MessageProps } from "src/types/chat.types";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import type { MessageProps } from "src/types/chat.types";
 
 export function* initFetchMessage() {
   try {

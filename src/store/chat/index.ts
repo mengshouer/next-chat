@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { MessageProps } from "src/types/chat.types";
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import type { MessageProps } from "src/types/chat.types";
 
 interface ImessageState {
   status: "success" | "loading" | "error";

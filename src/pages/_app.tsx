@@ -1,8 +1,8 @@
+import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Provider } from "react-redux";
 import store from "src/store";
 import "../styles/globals.css";
-import type { AppProps } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

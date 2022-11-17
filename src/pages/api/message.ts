@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiHandler } from "next";
-import { MessageProps } from "src/types/chat.types";
+import type { MessageProps } from "src/types/chat.types";
 
 const localMessage: MessageProps[] = [
   {

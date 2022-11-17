@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "src/store";
 import { getMessageRequest } from "src/store/chat";
+import type { RootState } from "src/store";
 import type { MessageProps } from "src/types/chat.types";
 
 export default function Message() {
@@ -14,6 +14,7 @@ export default function Message() {
     if (!chat.data.length) {
       dispatch(getMessageRequest());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

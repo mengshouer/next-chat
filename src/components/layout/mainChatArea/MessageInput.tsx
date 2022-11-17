@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "src/store";
 import { updateMessageDataRequest } from "src/store/chat";
+import type { RootState } from "src/store";
 
 export default function MessageInput() {
   const [message, setMessage] = useState("");
