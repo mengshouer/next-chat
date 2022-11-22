@@ -19,9 +19,7 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    getMessageRequest: (state) => {
-      state.status = "loading";
-    },
+    getMessageRequest: () => {},
     getMessageSuccess: (state, action: PayloadAction<ImessageState>) => {
       state.status = "success";
       state.data = action.payload.data;
@@ -33,6 +31,10 @@ const chatSlice = createSlice({
     updateMessageDataRequest: (state, action: PayloadAction<MessageProps>) => {
       state.data.push(action.payload);
     },
+    pushRemoteMessageRequest: (
+      state,
+      action: PayloadAction<MessageProps>
+    ) => {},
     pushRemoteMessageFailure: (state, action: PayloadAction<Error>) => {
       state.status = "error";
       state.error = action.payload;
@@ -45,6 +47,8 @@ export const {
   getMessageSuccess,
   getMessageFailure,
   updateMessageDataRequest,
+  pushRemoteMessageRequest,
+  pushRemoteMessageFailure,
 } = chatSlice.actions;
 
 export const chatReducer = chatSlice.reducer;

@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getMessageRequest } from "src/store/chat";
+import { getMessageRequest, updateMessageDataRequest } from "src/store/chat";
 import type { RootState } from "src/store";
 import type { MessageProps } from "src/types/chat.types";
+import { connect } from "socket.io-client";
 
 export default function Message() {
   const useridRef = useRef<string>("");
@@ -15,6 +16,19 @@ export default function Message() {
     if (!chat.data.length) {
       dispatch(getMessageRequest());
     }
+
+    const socket = connect("http://localhost:3000", {
+      path: "/api/socket/io",
+    });
+    socket.on("connect", () => {
+      console.log("connected");
+    });
+    socket.on("message", (data: any) => {
+      dispatch(updateMessageDataRequest(data));
+    });
+    return () => {
+      socket.disconnect();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -1,10 +1,11 @@
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
-import { fetchMessage, postMessage } from "src/apis/chat";
+import { fetchMessage, postMessage } from "src/lib/chat";
 import {
   getMessageRequest,
   getMessageSuccess,
   getMessageFailure,
-  updateMessageDataRequest,
+  pushRemoteMessageRequest,
+  pushRemoteMessageFailure,
 } from ".";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { MessageProps } from "src/types/chat.types";
@@ -24,19 +25,15 @@ export function* initFetchMessage() {
   }
 }
 
-export function* updateMessageData(action: PayloadAction<MessageProps>) {
+export function* pushRemoteMessageData(action: PayloadAction<MessageProps>) {
   try {
-    const { status }: { status: number } = yield call(
-      postMessage,
-      action.payload
-    );
-  } catch {
-    // eslint-disable-next-line no-console
-    console.log("error");
+    const { data } = yield call(postMessage, action.payload);
+  } catch (errors: unknown) {
+    yield put(pushRemoteMessageFailure(errors as Error));
   }
 }
 
 export default function* chatSaga() {
   yield takeLatest(getMessageRequest.type, initFetchMessage);
-  yield takeEvery(updateMessageDataRequest.type, updateMessageData);
+  yield takeEvery(pushRemoteMessageRequest.type, pushRemoteMessageData);
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateMessageDataRequest } from "src/store/chat";
+import { pushRemoteMessageRequest } from "src/store/chat";
 import type { RootState } from "src/store";
 
 export default function MessageInput() {
@@ -11,8 +11,9 @@ export default function MessageInput() {
   const sendMessage = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
     if (!message) return;
+    // dispatch message to other users
     dispatch(
-      updateMessageDataRequest({
+      pushRemoteMessageRequest({
         user_id: user.user_id,
         username: user.username,
         message,

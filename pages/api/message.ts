@@ -1,5 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiHandler } from "next";
+import type { NextApiRequest } from "next";
+import type { NextApiResponseSocketIO } from "./socket/io";
 import type { MessageProps } from "src/types/chat.types";
 
 const localMessage: MessageProps[] = [
@@ -38,18 +39,18 @@ const localMessage: MessageProps[] = [
   },
 ];
 
-const MessageHandler: NextApiHandler = async (request, response) => {
-  // simulate IO latency
-  await new Promise((resolve) => setTimeout(resolve, 500));
+export default async function MessageHandler(
+  request: NextApiRequest,
+  response: NextApiResponseSocketIO
+) {
   if (request.method === "GET") {
     response.status(200).json({ data: localMessage });
   } else if (request.method === "POST") {
     const { message: newMessage } = request.body;
     localMessage.push(newMessage);
+    response.socket.server.io.emit("message", newMessage);
     response.status(201).json({ data: newMessage });
   } else {
     response.status(405).end();
   }
-};
-
-export default MessageHandler;
+}
