@@ -11,12 +11,12 @@ export default function Footer() {
       <div className="flex justify-between items-center rounded-2xl bg-blud-50 p-[10px] bg-[#373738]">
         <Image
           className="rounded-md hover:cursor-pointer"
-          src="https://placeimg.com/192/192/people"
+          src={user?.image || "https://placeimg.com/192/192/people"}
           alt="avatar"
           width={30}
           height={30}
         />
-        <span className="flex-auto px-2">{user.username}</span>
+        <span className="flex-auto px-2">{user.name}</span>
         <AdjustmentsHorizontal />
       </div>
     </footer>

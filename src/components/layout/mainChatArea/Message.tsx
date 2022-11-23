@@ -17,7 +17,7 @@ export default function Message() {
       dispatch(getMessageRequest());
     }
 
-    const socket = connect("http://localhost:3000", {
+    const socket = connect(process.env.NEXTAUTH_URL, {
       path: "/api/socket/io",
     });
     socket.on("connect", () => {
@@ -49,13 +49,13 @@ export default function Message() {
         chat.data.map((msg: MessageProps, index: number) => (
           // 判断是否为同一个人的消息，如果是同一个人的消息，就不显示头像和用户名
           <div
-            key={`${msg.user_id}-${msg.timestamp}`}
+            key={`${msg.email}-${msg.timestamp}`}
             className="msg-item flex hover:bg-[#313232] rounded-xl"
           >
             <div className="main_chatArea_avatar">
-              {(index === 0 || useridRef.current !== msg.user_id) && (
+              {(index === 0 || useridRef.current !== msg.email) && (
                 <Image
-                  src="https://placeimg.com/192/192/people"
+                  src={msg.image || "https://placeimg.com/192/192/people"}
                   alt="avatar"
                   width={50}
                   height={50}
@@ -63,14 +63,14 @@ export default function Message() {
               )}
             </div>
             <div className="flex flex-col">
-              {(index === 0 || useridRef.current !== msg.user_id) && (
+              {(index === 0 || useridRef.current !== msg.email) && (
                 <header className="h-[18px]">
-                  <strong className="text-white">{msg.username}</strong>
+                  <strong className="text-white">{msg.name}</strong>
                 </header>
               )}
               <main className="py-[6px]">{msg.message}</main>
             </div>
-            {(useridRef.current = msg.user_id) && ""}
+            {(useridRef.current = msg.email) && ""}
           </div>
         ))}
       <div ref={messageEnd} />

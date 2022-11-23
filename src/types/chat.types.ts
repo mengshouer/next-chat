@@ -1,6 +1,7 @@
 export type MessageProps = {
-  user_id: string;
-  username: string;
+  email: string;
+  name: string;
+  image: string;
   message: string;
   timestamp: number;
 };
