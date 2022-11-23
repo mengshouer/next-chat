@@ -16,7 +16,7 @@ export default function Footer() {
           width={30}
           height={30}
         />
-        <span className="flex-auto px-2">{user.username}</span>
+        <span className="flex-auto px-2">{user.name}</span>
         <AdjustmentsHorizontal />
       </div>
     </footer>
