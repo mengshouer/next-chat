@@ -23,7 +23,6 @@ CREATE TABLE "accounts" (
     "session_state" TEXT,
     "oauth_token_secret" TEXT,
     "oauth_token" TEXT,
-    "refresh_token_expires_in" INTEGER,
     CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 

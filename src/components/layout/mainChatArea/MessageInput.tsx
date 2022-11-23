@@ -16,6 +16,7 @@ export default function MessageInput() {
       pushRemoteMessageRequest({
         email: user.email as string,
         name: user.name as string,
+        image: user.image as string,
         message,
         timestamp: new Date().getTime(),
       })

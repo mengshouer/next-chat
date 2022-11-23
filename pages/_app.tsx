@@ -8,7 +8,7 @@ import "../src/styles/globals.css";
 
 export default function App({
   Component,
-  pageProps: { session, ...pageProps },
+  pageProps,
 }: AppProps<{ session: Session }>) {
   return (
     <>
@@ -22,7 +22,7 @@ export default function App({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <SessionProvider session={session}>
+      <SessionProvider session={pageProps.session}>
         <Provider store={store}>
           <Component {...pageProps} />
         </Provider>

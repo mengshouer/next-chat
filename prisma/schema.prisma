@@ -34,7 +34,6 @@ model Account {
   session_state      String?
   oauth_token_secret String?
   oauth_token        String?
-  refresh_token_expires_in Int?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -60,7 +59,7 @@ model User {
   image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  Messages      Message[]
+  messages      Message[]
   accounts      Account[]
   sessions      Session[]
 

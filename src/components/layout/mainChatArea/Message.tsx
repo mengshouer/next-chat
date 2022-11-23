@@ -55,7 +55,7 @@ export default function Message() {
             <div className="main_chatArea_avatar">
               {(index === 0 || useridRef.current !== msg.email) && (
                 <Image
-                  src="https://placeimg.com/192/192/people"
+                  src={msg.image || "https://placeimg.com/192/192/people"}
                   alt="avatar"
                   width={50}
                   height={50}
