@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgres"
   url = env("DATABASE_URL")
 }
 
@@ -11,17 +11,17 @@ generator client {
 }
 
 model Message {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  content   String?
-  userId    Int?      @map("user_id")
-  user      User?     @relation(fields: [userId], references: [id])
+  content   String
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 
 model Account {
-  id                 Int     @id @default(autoincrement())
-  userId             Int     @map("user_id")
+  id                 String  @id @default(cuid())
+  userId             String  @map("user_id")
   type               String
   provider           String
   providerAccountId  String  @map("provider_account_id")
@@ -42,9 +42,9 @@ model Account {
 }
 
 model Session {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(cuid())
   sessionToken String   @unique @map("session_token")
-  userId       Int      @map("user_id")
+  userId       String   @map("user_id")
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -52,7 +52,7 @@ model Session {
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
+  id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
   emailVerified DateTime? @map("email_verified")
