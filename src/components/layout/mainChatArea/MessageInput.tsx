@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { pushRemoteMessageRequest } from "src/store/chat";
+import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "src/store";
 
 export default function MessageInput() {
@@ -14,8 +14,9 @@ export default function MessageInput() {
     // dispatch message to other users
     dispatch(
       pushRemoteMessageRequest({
-        user_id: user.user_id,
-        username: user.username,
+        email: user.email as string,
+        name: user.name as string,
+        image: user.image as string,
         message,
         timestamp: new Date().getTime(),
       })

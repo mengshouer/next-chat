@@ -3,6 +3,12 @@ module.exports = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["gravatar.com", "placeimg.com", "picsum.photos"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.gravatar.com",
+      },
+    ],
+    domains: ["avatars.githubusercontent.com", "placeimg.com", "picsum.photos"],
   },
 };

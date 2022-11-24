@@ -2,13 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface IuserState {
-  user_id: string;
-  username: string;
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
 }
 
 const initialState: IuserState = {
-  user_id: "1",
-  username: "John",
+  name: "Not logged in",
+  email: "Not logged in",
+  image: "",
 };
 
 const userSlice = createSlice({
@@ -17,8 +19,9 @@ const userSlice = createSlice({
   reducers: {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     updateUser: (state, action: PayloadAction<IuserState>) => {
-      state.user_id = action.payload.user_id;
-      state.username = action.payload.username;
+      state.name = action.payload.name;
+      state.email = action.payload.email;
+      state.image = action.payload.image;
     },
   },
 });
