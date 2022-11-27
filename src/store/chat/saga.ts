@@ -12,10 +12,14 @@ import type { MessageProps } from "src/types/chat.types";
 
 export function* initFetchMessage() {
   try {
-    const res: { data: MessageProps[] } = yield call(fetchMessage);
+    const res: {
+      data: MessageProps[];
+      pusher: { pusher_app_key: string; pusher_app_cluster: string };
+    } = yield call(fetchMessage);
     yield put(
       getMessageSuccess({
         status: "success",
+        pusher: res.pusher,
         data: res.data,
         error: null,
       })

@@ -4,13 +4,10 @@
 This is a simple realtime chat example using Next.js, Redux, TypeScript, Tailwind CSS, DaisyUI.
 </div>
 
-## How to use
+## Vercel support
 
-```bash
-git clone https://github.com/mengshouer/next-chat.git
-cd next-chat
-pnpm i
-pnpm dev
-```
+because vercel doesn't support [websocket](https://vercel.com/guides/do-vercel-serverless-functions-support-websocket-connections) and [sqlite](https://vercel.com/guides/is-sqlite-supported-in-vercel)
+
+this branch use pusher and remote postgresql database for vercel support.
 
 - preview: https://mengshouer-next-chat.vercel.app

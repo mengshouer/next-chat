@@ -1,7 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest } from "next";
-import type { NextApiResponseSocketIO } from "./socket/io";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { unstable_getServerSession } from "next-auth/next";
+import { authOptions } from "./auth/[...nextauth]";
 import type { MessageProps } from "src/types/chat.types";
+import Pusher from "pusher";
 
 const localMessage: MessageProps[] = [
   {
@@ -44,18 +46,37 @@ const localMessage: MessageProps[] = [
   },
 ];
 
+const pusher = new Pusher({
+  appId: process.env.PUSHER_APP_ID,
+  key: process.env.PUSHER_APP_KEY,
+  secret: process.env.PUSHER_APP_SECRET,
+  cluster: process.env.PUSHER_APP_CLUSTER,
+  useTLS: true,
+});
+
 export default async function MessageHandler(
-  request: NextApiRequest,
-  response: NextApiResponseSocketIO
+  req: NextApiRequest,
+  res: NextApiResponse
 ) {
-  if (request.method === "GET") {
-    response.status(200).json({ data: localMessage });
-  } else if (request.method === "POST") {
-    const { message: newMessage } = request.body;
+  const session = await unstable_getServerSession(req, res, authOptions);
+  if (!session) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+  if (req.method === "GET") {
+    res.status(200).json({
+      data: localMessage,
+      pusher: {
+        pusher_app_key: process.env.PUSHER_APP_KEY,
+        pusher_app_cluster: process.env.PUSHER_APP_CLUSTER,
+      },
+    });
+  } else if (req.method === "POST") {
+    const { message: newMessage } = req.body;
     localMessage.push(newMessage);
-    response.socket.server.io.emit("message", newMessage);
-    response.status(201).json({ data: newMessage });
+    pusher.trigger("chat", "message", newMessage);
+    res.status(201).json({ data: newMessage });
   } else {
-    response.status(405).end();
+    res.status(405).end();
   }
 }

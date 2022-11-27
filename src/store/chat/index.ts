@@ -4,12 +4,14 @@ import type { MessageProps } from "src/types/chat.types";
 
 interface ImessageState {
   status: "success" | "loading" | "error";
+  pusher: { pusher_app_key: string; pusher_app_cluster: string };
   data: MessageProps[];
   error: Error | null;
 }
 
 const initialState: ImessageState = {
   status: "loading",
+  pusher: { pusher_app_key: "", pusher_app_cluster: "" },
   data: [],
   error: null,
 };
@@ -23,6 +25,7 @@ const chatSlice = createSlice({
     getMessageSuccess: (state, action: PayloadAction<ImessageState>) => {
       state.status = "success";
       state.data = action.payload.data;
+      state.pusher = action.payload.pusher;
     },
     getMessageFailure: (state, action: PayloadAction<Error>) => {
       state.status = "error";

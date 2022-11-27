@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getMessageRequest, updateMessageDataRequest } from "src/store/chat";
 import type { RootState } from "src/store";
 import type { MessageProps } from "src/types/chat.types";
-import { connect } from "socket.io-client";
+import Pusher from "pusher-js";
 
 export default function Message() {
   const useridRef = useRef<string>("");
@@ -12,26 +12,32 @@ export default function Message() {
   const chat = useSelector((state: RootState) => state.chat);
   const dispatch = useDispatch();
 
+  // first get message data render
   useEffect(() => {
     if (!chat.data.length) {
       dispatch(getMessageRequest());
     }
-
-    const socket = connect(process.env.NEXTAUTH_URL, {
-      path: "/api/socket/io",
-    });
-    socket.on("connect", () => {
-      console.log("connected");
-    });
-    socket.on("message", (data: any) => {
-      dispatch(updateMessageDataRequest(data));
-    });
-    return () => {
-      socket.disconnect();
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Synchronous remote push
+  useEffect(() => {
+    const pusher = new Pusher(chat.pusher.pusher_app_key, {
+      cluster: chat.pusher.pusher_app_cluster,
+    });
+
+    const channel = pusher.subscribe("chat");
+    channel.bind("message", (data: MessageProps) => {
+      dispatch(updateMessageDataRequest(data));
+    });
+
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+    };
+  }, [chat.pusher, dispatch]);
+
+  // always scroll to the bottom
   useEffect(() => {
     if (messageEnd.current) {
       messageEnd.current.scrollIntoView();
