@@ -2,59 +2,40 @@
 import type { NextApiRequest } from "next";
 import type { NextApiResponseSocketIO } from "./socket/io";
 import type { MessageProps } from "src/types/chat.types";
-
-const localMessage: MessageProps[] = [
-  {
-    email: "1",
-    name: "John",
-    image: "",
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea dolor sint nulla accusantium quia, quidem enim, tempore voluptatibus veniam molestiae nisi quo praesentium in, consequuntur odit ipsa possimus ratione dolorum.",
-    timestamp: 1668432217073,
-  },
-  {
-    email: "1",
-    name: "John",
-    image: "",
-    message:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestias quis, quos consequuntur reiciendis similique aspernatur esse ab quisquam non, enim itaque asperiores alias ex illum sequi explicabo cupiditate. Amet, numquam.",
-    timestamp: 1668432217074,
-  },
-  {
-    email: "1",
-    name: "John",
-    image: "",
-    message: "How are you?",
-    timestamp: 1668432217075,
-  },
-  {
-    email: "2",
-    name: "Jane",
-    image: "",
-    message:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam tempora ratione in, aut expedita aspernatur iure autem illum corrupti beatae, molestias est eaque doloremque, magnam inventore quisquam dignissimos quaerat a.",
-    timestamp: 1668432217076,
-  },
-  {
-    email: "2",
-    name: "Jane",
-    image: "",
-    message: "How are you?",
-    timestamp: 1668432217077,
-  },
-];
+import prisma from "../../src/lib/prisma";
 
 export default async function MessageHandler(
   request: NextApiRequest,
   response: NextApiResponseSocketIO
 ) {
   if (request.method === "GET") {
-    response.status(200).json({ data: localMessage });
+    // Get the last 100 pieces of message from the database
+    const res = await prisma.message.findMany({
+      take: 100,
+      // orderBy: {
+      //   id: "desc",
+      // },
+      include: {
+        user: true,
+      },
+    });
+    response.status(200).json({ data: res });
   } else if (request.method === "POST") {
-    const { message: newMessage } = request.body;
-    localMessage.push(newMessage);
-    response.socket.server.io.emit("message", newMessage);
-    response.status(201).json({ data: newMessage });
+    const { message }: { message: MessageProps } = request.body;
+    // save to database
+    const res = await prisma.message.create({
+      data: {
+        userId: message.userId,
+        content: message.content,
+      },
+    });
+    const user = {
+      id: message.userId,
+      name: message.userName,
+      image: message.avatar,
+    };
+    response.socket.server.io.emit("message", { ...res, user });
+    response.status(201).json({ data: message });
   } else {
     response.status(405).end();
   }

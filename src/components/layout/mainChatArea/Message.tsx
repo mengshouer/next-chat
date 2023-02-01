@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, ReactNode } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getMessageRequest, updateMessageDataRequest } from "src/store/chat";
 import type { RootState } from "src/store";
-import type { MessageProps } from "src/types/chat.types";
+import type { MessageResProps } from "src/types/chat.types";
 import { connect } from "socket.io-client";
 
 export default function Message() {
@@ -23,7 +23,7 @@ export default function Message() {
     socket.on("connect", () => {
       console.log("connected");
     });
-    socket.on("message", (data: any) => {
+    socket.on("message", (data: MessageResProps) => {
       dispatch(updateMessageDataRequest(data));
     });
     return () => {
@@ -38,24 +38,26 @@ export default function Message() {
     }
   }, [chat.data]);
 
+  console.log(useridRef);
+
   return (
     <>
       {chat.status !== "success" && (
         <div>
-          {chat.status}...{chat.error?.stack}
+          {chat.status}...{chat.error}
         </div>
       )}
       {chat.status === "success" &&
-        chat.data.map((msg: MessageProps, index: number) => (
+        chat.data.map((msg: MessageResProps, index: number) => (
           // 判断是否为同一个人的消息，如果是同一个人的消息，就不显示头像和用户名
           <div
-            key={`${msg.email}-${msg.timestamp}`}
+            key={`${msg.userId}-${msg.createdAt}`}
             className="msg-item flex hover:bg-[#313232] rounded-xl"
           >
             <div className="main_chatArea_avatar">
-              {(index === 0 || useridRef.current !== msg.email) && (
+              {(index === 0 || useridRef.current !== msg.userId) && (
                 <Image
-                  src={msg.image || "https://placeimg.com/192/192/people"}
+                  src={msg.user.image}
                   alt="avatar"
                   width={50}
                   height={50}
@@ -63,14 +65,14 @@ export default function Message() {
               )}
             </div>
             <div className="flex flex-col">
-              {(index === 0 || useridRef.current !== msg.email) && (
+              {(index === 0 || useridRef.current !== msg.userId) && (
                 <header className="h-[18px]">
-                  <strong className="text-white">{msg.name}</strong>
+                  <strong className="text-white">{msg.user.name}</strong>
                 </header>
               )}
-              <main className="py-[6px]">{msg.message}</main>
+              <main className="py-[6px]">{msg.content}</main>
             </div>
-            {(useridRef.current = msg.email) && ""}
+            {(useridRef.current = msg.userId) && ""}
           </div>
         ))}
       <div ref={messageEnd} />

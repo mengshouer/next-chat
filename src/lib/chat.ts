@@ -1,4 +1,4 @@
-import type { MessageProps } from "src/types/chat.types";
+import type { MessageProps, MessageResProps } from "src/types/chat.types";
 
 export async function fetchMessage(): Promise<{ data: MessageProps[] }> {
   const response = await fetch("/api/message", {
@@ -11,7 +11,7 @@ export async function fetchMessage(): Promise<{ data: MessageProps[] }> {
 
 export async function postMessage(
   message: MessageProps
-): Promise<{ data: MessageProps }> {
+): Promise<MessageResProps> {
   const response = await fetch("/api/message", {
     method: "post",
     body: JSON.stringify({
@@ -21,7 +21,7 @@ export async function postMessage(
       "Content-Type": "application/json",
     },
   });
-  const result = await response.json();
+  const result: MessageResProps = await response.json();
 
   return result;
 }

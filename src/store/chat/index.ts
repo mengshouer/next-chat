@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { MessageProps } from "src/types/chat.types";
+import type { MessageProps, MessageResProps } from "src/types/chat.types";
 
 interface ImessageState {
   status: "success" | "loading" | "error";
-  data: MessageProps[];
-  error: Error | null;
+  data: MessageResProps[];
+  error: string | null;
 }
 
 const initialState: ImessageState = {
@@ -24,18 +24,21 @@ const chatSlice = createSlice({
       state.status = "success";
       state.data = action.payload.data;
     },
-    getMessageFailure: (state, action: PayloadAction<Error>) => {
+    getMessageFailure: (state, action: PayloadAction<string>) => {
       state.status = "error";
       state.error = action.payload;
     },
-    updateMessageDataRequest: (state, action: PayloadAction<MessageProps>) => {
+    updateMessageDataRequest: (
+      state,
+      action: PayloadAction<MessageResProps>
+    ) => {
       state.data.push(action.payload);
     },
     pushRemoteMessageRequest: (
       state,
       action: PayloadAction<MessageProps>
     ) => {},
-    pushRemoteMessageFailure: (state, action: PayloadAction<Error>) => {
+    pushRemoteMessageFailure: (state, action: PayloadAction<string>) => {
       state.status = "error";
       state.error = action.payload;
     },

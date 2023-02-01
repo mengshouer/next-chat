@@ -8,11 +8,11 @@ import {
   pushRemoteMessageFailure,
 } from ".";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { MessageProps } from "src/types/chat.types";
+import type { MessageProps, MessageResProps } from "src/types/chat.types";
 
 export function* initFetchMessage() {
   try {
-    const res: { data: MessageProps[] } = yield call(fetchMessage);
+    const res: { data: MessageResProps[] } = yield call(fetchMessage);
     yield put(
       getMessageSuccess({
         status: "success",
@@ -20,16 +20,29 @@ export function* initFetchMessage() {
         error: null,
       })
     );
-  } catch (errors: unknown) {
-    yield put(getMessageFailure(errors as Error));
+  } catch (error: Error | unknown) {
+    let message: string;
+    if (error instanceof Error) {
+      message = error.message;
+    } else {
+      message = String(error);
+    }
+    yield put(getMessageFailure(message));
   }
 }
 
 export function* pushRemoteMessageData(action: PayloadAction<MessageProps>) {
   try {
-    const { data } = yield call(postMessage, action.payload);
-  } catch (errors: unknown) {
-    yield put(pushRemoteMessageFailure(errors as Error));
+    const res: MessageResProps = yield call(postMessage, action.payload);
+    // Identify whether the message was sent successfully (todo...)
+  } catch (error: Error | unknown) {
+    let message: string;
+    if (error instanceof Error) {
+      message = error.message;
+    } else {
+      message = String(error);
+    }
+    yield put(pushRemoteMessageFailure(message));
   }
 }
 

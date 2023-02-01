@@ -1,7 +1,7 @@
 import { Sidebar, MiddleColumn, MainChatArea } from "src/components/layout";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { updateUser } from "src/store/user";
+import { updateUserProfile } from "src/store/user";
 import { useSession, signIn } from "next-auth/react";
 
 export default function Layout() {
@@ -10,7 +10,7 @@ export default function Layout() {
 
   useEffect(() => {
     if (data?.user) {
-      dispatch(updateUser(data.user));
+      dispatch(updateUserProfile());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);

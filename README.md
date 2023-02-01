@@ -9,6 +9,8 @@ This is a simple realtime chat example using Next.js, Redux, TypeScript, Tailwin
 ```bash
 git clone https://github.com/mengshouer/next-chat.git
 cd next-chat
+cp .env.example .env
+# edit .env
 pnpm i
 pnpm dev
 ```

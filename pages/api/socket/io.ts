@@ -21,9 +21,9 @@ export default async function socketHandler(
     });
 
     io.on("connection", (socket) => {
-      console.log("a user connected");
+      // console.log("a user connected");
       socket.on("disconnect", () => {
-        console.log("user disconnected");
+        // console.log("user disconnected");
       });
     });
 
