@@ -28,7 +28,7 @@ const userSlice = createSlice({
       state.name = action.payload.name;
       state.email = action.payload.email;
       state.email_verified = action.payload.email_verified;
-      state.image = action.payload.image;
+      state.image = action.payload.image || "https://picsum.photos/192/192";
     },
   },
 });

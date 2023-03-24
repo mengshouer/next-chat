@@ -13,15 +13,21 @@ export default async function MessageHandler(
     res.status(401).end();
     return;
   }
-  if (req.method === "GET") {
-    // Get the last 100 pieces of message from the database
-    const user = await prisma.user.findUnique({
-      where: {
-        email: session.user?.email as string,
-      },
-    });
-    res.status(200).json(user);
-  } else {
-    res.status(405).end();
+  try {
+    if (req.method === "GET") {
+      // Get the last 100 pieces of message from the database
+      const user = await prisma.user.findUnique({
+        where: {
+          email: session.user?.email as string,
+        },
+      });
+      res.status(200).json(user);
+    } else {
+      res.status(405).end();
+    }
+  } catch (error: Error | unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(message);
+    res.status(500).end();
   }
 }

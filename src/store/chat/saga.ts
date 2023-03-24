@@ -21,12 +21,7 @@ export function* initFetchMessage() {
       })
     );
   } catch (error: Error | unknown) {
-    let message: string;
-    if (error instanceof Error) {
-      message = error.message;
-    } else {
-      message = String(error);
-    }
+    const message = error instanceof Error ? error.message : String(error);
     yield put(getMessageFailure(message));
   }
 }
@@ -36,12 +31,7 @@ export function* pushRemoteMessageData(action: PayloadAction<MessageProps>) {
     const res: MessageResProps = yield call(postMessage, action.payload);
     // Identify whether the message was sent successfully (todo...)
   } catch (error: Error | unknown) {
-    let message: string;
-    if (error instanceof Error) {
-      message = error.message;
-    } else {
-      message = String(error);
-    }
+    const message = error instanceof Error ? error.message : String(error);
     yield put(pushRemoteMessageFailure(message));
   }
 }

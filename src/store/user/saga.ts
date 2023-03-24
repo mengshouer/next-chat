@@ -8,13 +8,8 @@ export function* updateUser() {
     const res: IuserState = yield call(fetchUserProfile);
     yield put(updateUserRequest(res));
   } catch (error: Error | unknown) {
-    let message: string;
-    if (error instanceof Error) {
-      message = error.message;
-    } else {
-      message = String(error);
-    }
-    console.log(message);
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(message);
   }
 }
 

@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="flex justify-between items-center rounded-2xl bg-blud-50 p-[10px] bg-[#373738]">
         <Image
           className="rounded-md hover:cursor-pointer"
-          src={user?.image || "https://placeimg.com/192/192/people"}
+          src={user?.image}
           alt="avatar"
           width={30}
           height={30}

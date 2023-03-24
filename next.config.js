@@ -9,6 +9,6 @@ module.exports = {
         hostname: "**.gravatar.com",
       },
     ],
-    domains: ["avatars.githubusercontent.com", "placeimg.com", "picsum.photos"],
+    domains: ["avatars.githubusercontent.com", "picsum.photos"],
   },
 };

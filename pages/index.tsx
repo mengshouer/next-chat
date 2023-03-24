@@ -5,7 +5,7 @@ const Home: NextPage = () => {
   return (
     <div
       className="hero min-h-screen"
-      style={{ backgroundImage: `url("https://placeimg.com/1000/800/arch")` }}
+      style={{ backgroundImage: `url("https://picsum.photos/1000/800")` }}
     >
       <div className="hero-overlay bg-opacity-60"></div>
       <div className="hero-content text-center text-neutral-content">
