@@ -11,6 +11,8 @@ git clone https://github.com/mengshouer/next-chat.git
 cd next-chat
 cp .env.example .env
 # edit .env
+# Initialize the database
+# npx prisma migrate dev
 pnpm i
 pnpm dev
 ```
